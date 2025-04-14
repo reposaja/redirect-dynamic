@@ -6,17 +6,47 @@
   <title>Redirecting...</title>
   <script>
     const params = new URLSearchParams(window.location.search);
-    let target = params.get("to");
+    const target = params.get("to");
 
-    // Fallback: if no "to" param, try taking the whole query string
-    if (!target) {
-      target = window.location.search.substring(1); // Remove the "?" from query string
-    }
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    const logClick = () => {
+      fetch("<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const target = params.get("to");
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    const logClick = () => {
+      fetch("https://webhook.site/12345678-abcd-efgh-ijkl-1234567890ab", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
+          redirectTo: target
+        })
+      });
+    };
 
     if (target && target.startsWith("http")) {
-      setTimeout(() => {
-        window.location.href = target;
-      }, 3000);
+      if (isMobile) {
+        logClick();
+        setTimeout(() => {
+          window.location.href = target;
+        }, 2000);
+      } else {
+        document.write("<h2 style='text-align:center;'>Please open this link on a mobile device 📱</h2>");
+      }
+    } else {
+      document.write("<h2 style='text-align:center;'>Invalid or missing redirect link</h2>");
     }
   </script>
   <style>
@@ -41,8 +71,58 @@
 <body>
   <div class="container">
     <h2>Please wait...</h2>
-    <p>We are redirecting you to the payment page.</p>
-    <p>If you are not redirected automatically, check your link or contact support.</p>
+    <p>We are redirecting you to the destination page.</p>
+  </div>
+</body>
+</html>
+", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
+          redirectTo: target
+        })
+      });
+    };
+
+    if (target && target.startsWith("http")) {
+      if (isMobile) {
+        logClick();
+        setTimeout(() => {
+          window.location.href = target;
+        }, 2000);
+      } else {
+        document.write("<h2 style='text-align:center;'>Please open this link on a mobile device 📱</h2>");
+      }
+    } else {
+      document.write("<h2 style='text-align:center;'>Invalid or missing redirect link</h2>");
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: center;
+      padding-top: 100px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      width: 90%;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Please wait...</h2>
+    <p>We are redirecting you to the destination page.</p>
   </div>
 </body>
 </html>
