@@ -6,7 +6,13 @@
   <title>Redirecting...</title>
   <script>
     const params = new URLSearchParams(window.location.search);
-    const target = params.get("to");
+    let target = params.get("to");
+
+    // Fallback: if no "to" param, try taking the whole query string
+    if (!target) {
+      target = window.location.search.substring(1); // Remove the "?" from query string
+    }
+
     if (target && target.startsWith("http")) {
       setTimeout(() => {
         window.location.href = target;
